@@ -1,0 +1,39 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Mendo.UAP"
+    xmlns:controls="using:Mendo.UAP.Controls"
+    xmlns:Behaviors="using:Mendo.UAP.Behaviors"
+    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity">
+
+    <Style TargetType="controls:RatingControl">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:RatingControl">
+                    <Grid Height="24" Width="180">
+                        <!--Outline-->
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="24" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CE;"/>
+                            <TextBlock FontSize="24" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CE;"/>
+                            <TextBlock FontSize="24" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CE;"/>
+                            <TextBlock FontSize="24" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CE;"/>
+                            <TextBlock FontSize="24" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CE;"/>
+                        </StackPanel>
+                        <!--Filled-->
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="24" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CF;"/>
+                            <TextBlock FontSize="24" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CF;"/>
+                            <TextBlock FontSize="24" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CF;"/>
+                            <TextBlock FontSize="24" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CF;"/>
+                            <TextBlock FontSize="24" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CF;"/>
+                            <Interactivity:Interaction.Behaviors>
+                                <Behaviors:RatingClippingBehavior Rating="{Binding Rating, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
+                            </Interactivity:Interaction.Behaviors>
+                        </StackPanel>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

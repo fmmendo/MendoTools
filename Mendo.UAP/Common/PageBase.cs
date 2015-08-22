@@ -20,10 +20,10 @@ namespace Mendo.UAP.Common
             // 2) Handle hardware navigation requests
             Loaded += (sender, e) =>
             {
-//#if WINDOWS_PHONE_APP
-//                Windows.Phone.UI.Input.HardwareButtons.BackPressed += HardwareButtons_BackPressed;
-//#else
-//                StartLayoutUpdates(sender, e);
+                //#if WINDOWS_PHONE_APP
+                //                Windows.Phone.UI.Input.HardwareButtons.BackPressed += HardwareButtons_BackPressed;
+                //#else
+                //                StartLayoutUpdates(sender, e);
                 // Keyboard and mouse navigation only apply when occupying the entire window
                 if (ActualHeight == Window.Current.Bounds.Height && ActualWidth == Window.Current.Bounds.Width)
                 {
@@ -31,19 +31,19 @@ namespace Mendo.UAP.Common
                     Window.Current.CoreWindow.Dispatcher.AcceleratorKeyActivated += CoreDispatcher_AcceleratorKeyActivated;
                     Window.Current.CoreWindow.PointerPressed += CoreWindow_PointerPressed;
                 }
-//#endif
+                //#endif
             };
 
             // Undo the same changes when the page is no longer visible
             Unloaded += (sender, e) =>
             {
-//#if WINDOWS_PHONE_APP
-//                Windows.Phone.UI.Input.HardwareButtons.BackPressed -= HardwareButtons_BackPressed;
-//#else
-//                StopLayoutUpdates(sender, e);
+                //#if WINDOWS_PHONE_APP
+                //                Windows.Phone.UI.Input.HardwareButtons.BackPressed -= HardwareButtons_BackPressed;
+                //#else
+                //                StopLayoutUpdates(sender, e);
                 Window.Current.CoreWindow.Dispatcher.AcceleratorKeyActivated -= CoreDispatcher_AcceleratorKeyActivated;
-                Window.Current.CoreWindow.PointerPressed -=CoreWindow_PointerPressed;
-//#endif
+                Window.Current.CoreWindow.PointerPressed -= CoreWindow_PointerPressed;
+                //#endif
             };
         }
 
