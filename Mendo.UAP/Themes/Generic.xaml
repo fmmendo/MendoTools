@@ -8,25 +8,28 @@
 
     <Style TargetType="controls:RatingControl">
         <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:RatingControl">
-                    <Grid Height="24" Width="180">
+                    <Grid Height="{TemplateBinding FontSize}">
                         <!--Outline-->
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock FontSize="24" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CE;"/>
-                            <TextBlock FontSize="24" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CE;"/>
-                            <TextBlock FontSize="24" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CE;"/>
-                            <TextBlock FontSize="24" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CE;"/>
-                            <TextBlock FontSize="24" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CE;"/>
+                            <TextBlock FontSize="{TemplateBinding FontSize}" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="Gray" Text="&#xE1CF;"/>
+                            <TextBlock FontSize="{TemplateBinding FontSize}" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="Gray" Text="&#xE1CF;"/>
+                            <TextBlock FontSize="{TemplateBinding FontSize}" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="Gray" Text="&#xE1CF;"/>
+                            <TextBlock FontSize="{TemplateBinding FontSize}" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="Gray" Text="&#xE1CF;"/>
+                            <TextBlock FontSize="{TemplateBinding FontSize}" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="Gray" Text="&#xE1CF;"/>
                         </StackPanel>
                         <!--Filled-->
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock FontSize="24" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CF;"/>
-                            <TextBlock FontSize="24" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CF;"/>
-                            <TextBlock FontSize="24" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CF;"/>
-                            <TextBlock FontSize="24" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CF;"/>
-                            <TextBlock FontSize="24" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CF;"/>
+                            <TextBlock FontSize="{TemplateBinding FontSize}" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CF;"/>
+                            <TextBlock FontSize="{TemplateBinding FontSize}" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CF;"/>
+                            <TextBlock FontSize="{TemplateBinding FontSize}" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CF;"/>
+                            <TextBlock FontSize="{TemplateBinding FontSize}" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CF;"/>
+                            <TextBlock FontSize="{TemplateBinding FontSize}" Margin="0,0,12,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{TemplateBinding Foreground}" Text="&#xE1CF;"/>
                             <Interactivity:Interaction.Behaviors>
                                 <Behaviors:RatingClippingBehavior Rating="{Binding Rating, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
                             </Interactivity:Interaction.Behaviors>
