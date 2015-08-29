@@ -253,5 +253,17 @@ namespace Mendo.UAP.Common
         }
 
         #endregion
+
+        /// <summary>
+        /// Optional container for a command bar on desktop/tablet view
+        /// </summary>
+        public FrameworkElement TopBarContent
+        {
+            get { return (FrameworkElement)GetValue(TopBarContentProperty); }
+            set { SetValue(TopBarContentProperty, value); }
+        }
+
+        public static readonly DependencyProperty TopBarContentProperty =
+            DependencyProperty.Register("TopBarContent", typeof(FrameworkElement), typeof(PageBase), new PropertyMetadata(null));
     }
 }
