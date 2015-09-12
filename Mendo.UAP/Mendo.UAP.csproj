@@ -114,25 +114,38 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviors\RatingClippingBehavior.cs" />
+    <Compile Include="Common\DeviceInformation.cs" />
     <Compile Include="Common\NavigationService.cs" />
     <Compile Include="Common\PageBase.cs" />
     <Compile Include="Common\Settings.cs" />
     <Compile Include="Common\SingletonViewModelBase.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="Common\ViewModelBase.cs" />
+    <Compile Include="Controls\RateControl.xaml.cs">
+      <DependentUpon>RateControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\RatingControl.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Exceptions\SuspensionManagerException.cs" />
+    <Compile Include="Extensions\Notifications\BadgeContent.cs" />
+    <Compile Include="Extensions\Notifications\ContentInterfaces.cs" />
+    <Compile Include="Extensions\Notifications\NotificationBase.cs" />
     <Compile Include="Extensions\TemplatedVisualTreeExtensions.cs" />
+    <Compile Include="Extensions\Notifications\TileContent.cs" />
     <Compile Include="Extensions\VisualTreeExtensions.cs" />
     <Compile Include="IO\Files.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\Singleton.cs" />
     <Compile Include="Serialization\Binary.cs" />
     <Compile Include="Serialization\ISerializer.cs" />
+    <Compile Include="Services\TileManagerService.cs" />
     <Content Include="Properties\Mendo.UAP.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\RateControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
