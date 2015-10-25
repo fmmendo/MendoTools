@@ -152,6 +152,8 @@ namespace Mendo.UAP
         {
             CheckReentrancy();
             base.ClearItems();
+            OnPropertyChanged(nameof(IsFirstLoadedEmpty));
+            OnPropertyChanged(nameof(IsEmpty));
             OnPropertyChanged(CountString);
             OnPropertyChanged(IndexerName);
             OnCollectionReset();
@@ -168,6 +170,8 @@ namespace Mendo.UAP
 
             base.RemoveItem(index);
 
+            OnPropertyChanged(nameof(IsFirstLoadedEmpty));
+            OnPropertyChanged(nameof(IsEmpty));
             OnPropertyChanged(CountString);
             OnPropertyChanged(IndexerName);
             OnCollectionChanged(NotifyCollectionChangedAction.Remove, removedItem, index);
@@ -181,7 +185,8 @@ namespace Mendo.UAP
         {
             CheckReentrancy();
             base.InsertItem(index, item);
-
+            OnPropertyChanged(nameof(IsFirstLoadedEmpty));
+            OnPropertyChanged(nameof(IsEmpty));
             OnPropertyChanged(CountString);
             OnPropertyChanged(IndexerName);
             OnCollectionChanged(NotifyCollectionChangedAction.Add, item, index);
@@ -196,7 +201,8 @@ namespace Mendo.UAP
             CheckReentrancy();
             T originalItem = this[index];
             base.SetItem(index, item);
-
+            OnPropertyChanged(nameof(IsFirstLoadedEmpty));
+            OnPropertyChanged(nameof(IsEmpty));
             OnPropertyChanged(IndexerName);
             OnCollectionChanged(NotifyCollectionChangedAction.Replace, originalItem, item, index);
         }
@@ -213,7 +219,8 @@ namespace Mendo.UAP
 
             base.RemoveItem(oldIndex);
             base.InsertItem(newIndex, removedItem);
-
+            OnPropertyChanged(nameof(IsFirstLoadedEmpty));
+            OnPropertyChanged(nameof(IsEmpty));
             OnPropertyChanged(IndexerName);
             OnCollectionChanged(NotifyCollectionChangedAction.Move, removedItem, newIndex, oldIndex);
         }
@@ -595,10 +602,13 @@ namespace Mendo.UAP
         private bool isFirstLoaded = false;
         private bool isLoading = false;
         private bool isFaulted = false;
+
         private uint pageSize = 10;
         private uint pageOffset = 0;
+
         private string errorMessage = string.Empty;
         private string emptyMessage = string.Empty;
+
         public LoadState loadState = LoadState.NotLoaded;
     }
 }
