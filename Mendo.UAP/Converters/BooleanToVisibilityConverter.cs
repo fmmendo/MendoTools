@@ -8,9 +8,7 @@ namespace Mendo.UAP.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            bool isReverse = parameter != null;
-
-            if (!isReverse)
+            if (parameter == null)
             {
                 return (value is bool && (bool)value) ? Visibility.Visible : Visibility.Collapsed;
             }
@@ -20,6 +18,14 @@ namespace Mendo.UAP.Converters
             }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language) => !(value is bool && (bool)value);
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            if (parameter == null)
+            {
+                return value is Visibility && (Visibility)value == Visibility.Visible;
+            }
+            else
+                return value is Visibility && (Visibility)value == Visibility.Collapsed;
+        }
     }
 }
