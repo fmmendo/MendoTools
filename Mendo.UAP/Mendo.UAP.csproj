@@ -114,6 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviors\RatingClippingBehavior.cs" />
+    <Compile Include="Cache\INetworkCache.cs" />
     <Compile Include="Collections\DynamicCollection.cs" />
     <Compile Include="Collections\LoadState.cs" />
     <Compile Include="Common\DeviceInformation.cs" />
@@ -128,6 +129,7 @@
       <DependentUpon>RateControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\RatingControl.cs" />
+    <Compile Include="Converters\BooleanReverseConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Exceptions\SuspensionManagerException.cs" />
     <Compile Include="Extensions\Notifications\BadgeContent.cs" />
