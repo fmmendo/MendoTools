@@ -52,9 +52,5 @@ namespace Mendo.UAP.Controls
         // Using a DependencyProperty as the backing store for EmptyGlyph.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty EmptyGlyphProperty =
             DependencyProperty.Register("EmptyGlyph", typeof(string), typeof(RatingControl), new PropertyMetadata("&#xE1CF;"));
-
-
-
-
     }
 }

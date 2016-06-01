@@ -132,9 +132,12 @@
     <Compile Include="Converters\BooleanReverseConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Exceptions\SuspensionManagerException.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\Notifications\BadgeContent.cs" />
     <Compile Include="Extensions\Notifications\ContentInterfaces.cs" />
     <Compile Include="Extensions\Notifications\NotificationBase.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TemplatedVisualTreeExtensions.cs" />
     <Compile Include="Extensions\Notifications\TileContent.cs" />
     <Compile Include="Extensions\VisualTreeExtensions.cs" />
