@@ -1,10 +1,7 @@
 ﻿using Mendo.UAP.IO;
 using Mendo.UAP.Serialization;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 
@@ -62,7 +59,7 @@ namespace Mendo.UAP.Common
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <param name="location"></param>
-        public static void CreateDefault(String key, object value, SettingsLocation location)
+        public static void CreateDefault(string key, object value, SettingsLocation location)
         {
             Set(key, value, location, false);
         }
@@ -73,7 +70,7 @@ namespace Mendo.UAP.Common
         /// <param name="key"></param>
         /// <param name="location"></param>
         /// <returns></returns>
-        public static Boolean Exists(String key, SettingsLocation location)
+        public static bool Exists(string key, SettingsLocation location)
         {
             return GetContainer(location).Values.ContainsKey(key);
         }
@@ -84,7 +81,7 @@ namespace Mendo.UAP.Common
         /// <param name="key"></param>
         /// <param name="location"></param>
         /// <returns></returns>
-        public static Boolean Remove(String key, SettingsLocation location)
+        public static bool Remove(string key, SettingsLocation location)
         {
             if (Exists(key, location))
             {
@@ -101,7 +98,7 @@ namespace Mendo.UAP.Common
         /// <param name="key"></param>
         /// <param name="location"></param>
         /// <returns></returns>
-        public static object Get(String key, SettingsLocation location)
+        public static object Get(string key, SettingsLocation location)
         {
             if (Exists(key, location))
                 return (object)GetContainer(location).Values[key];
@@ -109,7 +106,7 @@ namespace Mendo.UAP.Common
                 return null;
         }
 
-        public static T Get<T>(String key, SettingsLocation location, T defaultValue = default(T))
+        public static T Get<T>(string key, SettingsLocation location, T defaultValue = default(T))
         {
             if (Exists(key, location))
                 return (T)GetContainer(location).Values[key];
@@ -128,7 +125,7 @@ namespace Mendo.UAP.Common
         /// <param name="location"></param>
         /// <param name="overwrite">If true, setting is always set. If false, setting is only set if the key does not already exist</param>
         /// <returns>If true, setting was set. If false, key already existed and no changes were made</returns>
-        public static Boolean Set(String key, object value, SettingsLocation location, bool overwrite = true)
+        public static bool Set(string key, object value, SettingsLocation location, bool overwrite = true)
         {
             try
             {
@@ -142,15 +139,13 @@ namespace Mendo.UAP.Common
                 else
                     values.Add(key, value);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
 
             return true;
         }
-
-
 
         #region FileCaching
 
@@ -163,7 +158,7 @@ namespace Mendo.UAP.Common
             return ApplicationData.Current.LocalCacheFolder.CreateFolderAsync("SettingsCache", CreationCollisionOption.OpenIfExists).AsTask();
         }
 
-        public static async Task<Boolean> DeleteFileAsync(String key)
+        public static async Task<bool> DeleteFileAsync(string key)
         {
             try
             {
@@ -175,7 +170,7 @@ namespace Mendo.UAP.Common
                         await file.DeleteAsync().AsTask().ConfigureAwait(false);
                 });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -193,7 +188,7 @@ namespace Mendo.UAP.Common
         /// <param name="location"></param>
         /// <param name="overwrite"></param>
         /// <returns></returns>
-        public static async Task<Boolean> SetSerializedAsync<T>(String key, String data)
+        public static async Task<bool> SetSerializedAsync<T>(string key, string data)
         {
             try
             {
@@ -204,7 +199,7 @@ namespace Mendo.UAP.Common
                     await FileIO.WriteTextAsync(file, data).AsTask().ConfigureAwait(false);
                 });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -220,9 +215,9 @@ namespace Mendo.UAP.Common
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static async Task<String> GetSerializedAsync(String key)
+        public static async Task<String> GetSerializedAsync(string key)
         {
-            String result = null;
+            string result = null;
 
             try
             {
@@ -234,7 +229,7 @@ namespace Mendo.UAP.Common
                         result = await FileIO.ReadTextAsync(file).AsTask().ConfigureAwait(false);
                 });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return result;
             }
@@ -252,7 +247,7 @@ namespace Mendo.UAP.Common
         /// <param name="location"></param>
         /// <param name="overwrite"></param>
         /// <returns></returns>
-        public static async Task<Boolean> SetSerializedAsync<T>(String key, T value, ISerializer serializer)
+        public static async Task<bool> SetSerializedAsync<T>(string key, T value, ISerializer serializer)
         {
             try
             {
@@ -274,7 +269,7 @@ namespace Mendo.UAP.Common
                     }
                 });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -292,7 +287,7 @@ namespace Mendo.UAP.Common
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static async Task<T> GetSerializedAsync<T>(String key, ISerializer serializer)
+        public static async Task<T> GetSerializedAsync<T>(string key, ISerializer serializer)
         {
             T result = default(T);
 
@@ -320,7 +315,7 @@ namespace Mendo.UAP.Common
                     }
                 });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return result;
             }
@@ -329,7 +324,6 @@ namespace Mendo.UAP.Common
         }
 
         #endregion
-
 
     }
 }

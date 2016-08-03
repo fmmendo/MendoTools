@@ -34,11 +34,7 @@ namespace Mendo.UAP.Common
         /// Gets or sets the <see cref="MethodInfo" /> corresponding to this WeakFunc's
         /// method passed in the constructor.
         /// </summary>
-        protected MethodInfo Method
-        {
-            get;
-            set;
-        }
+        protected MethodInfo Method { get; set;}
 
         /// <summary>
         /// Get a value indicating whether the WeakFunc is static or not.
@@ -67,11 +63,7 @@ namespace Mendo.UAP.Common
         /// <see cref="Reference" />, for example if the
         /// method is anonymous.
         /// </summary>
-        protected WeakReference FuncReference
-        {
-            get;
-            set;
-        }
+        protected WeakReference FuncReference { get; set; }
 
         /// <summary>
         /// Gets or sets a WeakReference to the target passed when constructing
@@ -79,11 +71,7 @@ namespace Mendo.UAP.Common
         /// <see cref="FuncReference" />, for example if the
         /// method is anonymous.
         /// </summary>
-        protected WeakReference Reference
-        {
-            get;
-            set;
-        }
+        protected WeakReference Reference { get; set; }
 
         /// <summary>
         /// Initializes an empty instance of the WeakFunc class.
@@ -137,16 +125,12 @@ namespace Mendo.UAP.Common
             get
             {
                 if (_staticFunc == null && Reference == null)
-                {
                     return false;
-                }
 
                 if (_staticFunc != null)
                 {
                     if (Reference != null)
-                    {
                         return Reference.IsAlive;
-                    }
 
                     return true;
                 }
@@ -164,9 +148,7 @@ namespace Mendo.UAP.Common
             get
             {
                 if (Reference == null)
-                {
                     return null;
-                }
 
                 return Reference.Target;
             }
@@ -183,9 +165,7 @@ namespace Mendo.UAP.Common
             get
             {
                 if (FuncReference == null)
-                {
                     return null;
-                }
 
                 return FuncReference.Target;
             }
@@ -199,19 +179,14 @@ namespace Mendo.UAP.Common
         public TResult Execute()
         {
             if (_staticFunc != null)
-            {
                 return _staticFunc();
-            }
 
             var funcTarget = FuncTarget;
 
             if (IsAlive)
             {
                 if (Method != null && FuncReference != null && funcTarget != null)
-                {
                     return (TResult)Method.Invoke(funcTarget, null);
-                }
-
             }
 
             return default(TResult);

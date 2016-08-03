@@ -12,7 +12,6 @@ namespace Mendo.UAP.Extensions
     /// </summary>
     public static class TemplatedVisualTreeExtensions
     {
-
         #region GetFirstLogicalChildByType<T>(...)
         /// <summary>
         /// Retrieves the first logical child of a specified type using a 

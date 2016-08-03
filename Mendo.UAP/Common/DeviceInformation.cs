@@ -2,19 +2,30 @@
 using Windows.Foundation.Collections;
 using Windows.Foundation.Metadata;
 using Windows.Graphics.Display;
+using Windows.System.Profile;
 
 namespace Mendo.UAP.Common
 {
+    public enum DeviceFamily
+    {
+        Unknown,
+        Desktop,
+        Mobile,
+        Team,
+        IoT,
+        Xbox,
+        HoloLens
+    }
+
     public sealed class DeviceInformation
     {
-        public static bool IsPhone => ApiInformation.IsApiContractPresent("Windows.Phone.PhoneContract", 1);
         public static bool HasPhoneHardwareButtons => ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons");
 
         /// <summary>
         /// Returns the current scale factor for the display
         /// </summary>
         public static double ScaleFactor => (double)DisplayInformation.GetForCurrentView().ResolutionScale / 100;
-        
+
         /// <summary>
         /// Returns the app's current memory usage in MB
         /// </summary>
@@ -29,18 +40,28 @@ namespace Mendo.UAP.Common
 
         public static double ConvertToScaledResolution(double dimension) => Math.Round((dimension / 4) * ScaleFactor);
 
-        private static IObservableMap<String, String> _qualifierValues;
-        private static IObservableMap<String, String> QualifierValues
+        public DeviceFamily CurrentDeviceFamily
         {
             get
             {
-                if (_qualifierValues == null)
-                    _qualifierValues = Windows.ApplicationModel.Resources.Core.ResourceContext.GetForCurrentView().QualifierValues;
-
-                return _qualifierValues;
+                switch (AnalyticsInfo.VersionInfo.DeviceFamily)
+                {
+                    case "Windows.Desktop":
+                        return DeviceFamily.Desktop;
+                    case "Windows.Mobile":
+                        return DeviceFamily.Mobile;
+                    case "Windows.Team":
+                        return DeviceFamily.Team;
+                    case "Windows.IoT":
+                        return DeviceFamily.IoT;
+                    case "Windows.Xbox":
+                        return DeviceFamily.Xbox;
+                    case "Windows.HoloLens":
+                        return DeviceFamily.HoloLens;
+                    default:
+                        return DeviceFamily.Unknown;
+                }
             }
         }
-        public static bool IsMobile => QualifierValues.ContainsKey("DeviceFamily") && QualifierValues["DeviceFamily"].ToLowerInvariant() == "Mobile".ToLowerInvariant();
-
     }
 }
