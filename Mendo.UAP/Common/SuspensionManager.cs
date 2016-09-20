@@ -83,20 +83,13 @@ namespace Mendo.UAP.Common
                     }
                 }
 
-                //Json.Instance.DefaultSettings = jsonSettings;
-
                 var savedSession = await Settings.SetSerializedAsync(sessionStateFilename, _sessionState, Binary.Instance);
                 var savedParams = await Settings.SetSerializedAsync(parametreDictionaryFilename, _parametreDictionary, Binary.Instance);
-
-                //Json.Instance.DefaultSettings = null;
-
             }
             catch (Exception e)
             {
                 throw new SuspensionManagerException(e);
             }
-
-
         }
 
         /// <summary>
@@ -178,19 +171,15 @@ namespace Mendo.UAP.Common
         public static void RegisterFrame(Frame frame, String sessionStateKey, String sessionBaseKey = null)
         {
             if (frame.GetValue(FrameSessionStateKeyProperty) != null)
-            {
                 throw new InvalidOperationException("Frames can only be registered to one session state key");
-            }
 
             if (frame.GetValue(FrameSessionStateProperty) != null)
-            {
                 throw new InvalidOperationException("Frames must be either be registered before accessing frame session state, or not registered at all");
-            }
 
             if (!string.IsNullOrEmpty(sessionBaseKey))
             {
                 frame.SetValue(FrameSessionBaseKeyProperty, sessionBaseKey);
-                sessionStateKey = sessionBaseKey + "_" + sessionStateKey;
+                sessionStateKey = $"{sessionBaseKey}_{sessionStateKey}";
             }
 
             // Use a dependency property to associate the session key with a frame, and keep a list of frames whose
@@ -245,9 +234,8 @@ namespace Mendo.UAP.Common
                 {
                     // Registered frames reflect the corresponding session state
                     if (!_sessionState.ContainsKey(frameSessionKey))
-                    {
                         _sessionState[frameSessionKey] = new Dictionary<String, Object>();
-                    }
+
                     frameState = (Dictionary<String, Object>)_sessionState[frameSessionKey];
                 }
                 else
@@ -259,8 +247,6 @@ namespace Mendo.UAP.Common
             }
             return frameState;
         }
-
-
 
         private static void RestoreFrameNavigationState(Frame frame)
         {

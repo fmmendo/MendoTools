@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mendo.UAP.Extensions;
+using System;
 using System.Collections;
 using System.Linq;
 using Windows.UI.Xaml;

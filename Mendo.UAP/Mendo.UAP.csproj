@@ -11,7 +11,7 @@
     <AssemblyName>Mendo.UAP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.10240.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -115,8 +115,9 @@
   <ItemGroup>
     <Compile Include="Behaviors\RatingClippingBehavior.cs" />
     <Compile Include="Cache\INetworkCache.cs" />
-    <Compile Include="Collections\DynamicCollection.cs" />
+    <Compile Include="Collections\BindableCollection.cs" />
     <Compile Include="Collections\LoadState.cs" />
+    <Compile Include="Common\BindableSingleton.cs" />
     <Compile Include="Common\DeviceInformation.cs" />
     <Compile Include="Common\NavigationService.cs" />
     <Compile Include="Common\PageBase.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="Converters\StringFormatConverter.cs" />
     <Compile Include="Exceptions\SuspensionManagerException.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\GenericExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\Notifications\BadgeContent.cs" />
     <Compile Include="Extensions\Notifications\ContentInterfaces.cs" />
@@ -149,6 +151,8 @@
     <Compile Include="Common\Singleton.cs" />
     <Compile Include="Serialization\Binary.cs" />
     <Compile Include="Serialization\ISerializer.cs" />
+    <Compile Include="Serialization\Json.cs" />
+    <Compile Include="Serialization\XML.cs" />
     <Compile Include="Services\TileManagerService.cs" />
     <Content Include="Properties\Mendo.UAP.rd.xml" />
   </ItemGroup>

@@ -9,12 +9,10 @@ namespace Mendo.UAP.Serialization
         SerializationMode SupportedModes();
 
         Task<T> DeserializeAsync<T>(String data);
-
         Task<String> SerializeAsync<T>(T value);
-
-        Task<T> DeserializeStreamAsync<T>(Stream stream);
-
-        Task SerializeStreamAsync<T>(T data, Stream stream);
+        Task<T> DeserializeAsync<T>(Stream stream);
+        T Deserialize<T>(Stream stream);
+        Task SerializeAsync<T>(T data, Stream stream);
     }
 
     /// <summary>

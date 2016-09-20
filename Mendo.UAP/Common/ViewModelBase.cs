@@ -7,7 +7,7 @@ using Windows.UI.Core;
 
 namespace Mendo.UAP.Common
 {
-    public class ViewModelBase : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged, IDisposable
     {
         private Dictionary<string, object> data = new Dictionary<string, object>();
 
@@ -113,6 +113,15 @@ namespace Mendo.UAP.Common
             catch (Exception e)
             {
             }
+        }
+        #endregion
+
+        #region IDisposable
+
+
+        public void Dispose()
+        {
+            data.Clear();
         }
         #endregion
 

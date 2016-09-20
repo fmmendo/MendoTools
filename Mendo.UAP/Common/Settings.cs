@@ -27,7 +27,7 @@ namespace Mendo.UAP.Common
         /// </summary>
         public static ApplicationDataContainer LocalSettings
         {
-            get { return Windows.Storage.ApplicationData.Current.LocalSettings; }
+            get { return ApplicationData.Current.LocalSettings; }
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Mendo.UAP.Common
         /// </summary>
         public static ApplicationDataContainer RoamingSettings
         {
-            get { return Windows.Storage.ApplicationData.Current.RoamingSettings; }
+            get { return ApplicationData.Current.RoamingSettings; }
         }
 
         /// <summary>
@@ -106,6 +106,13 @@ namespace Mendo.UAP.Common
                 return null;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="location"></param>
+        /// <param name="default value"></param>
+        /// <returns></returns>
         public static T Get<T>(string key, SettingsLocation location, T defaultValue = default(T))
         {
             if (Exists(key, location))
@@ -264,7 +271,7 @@ namespace Mendo.UAP.Common
                     {
                         using (var stream = await file.OpenStreamForWriteAsync())
                         {
-                            await serializer.SerializeStreamAsync<T>(value, stream).ConfigureAwait(false);
+                            await serializer.SerializeAsync<T>(value, stream).ConfigureAwait(false);
                         }
                     }
                 });
@@ -309,7 +316,7 @@ namespace Mendo.UAP.Common
                         {
                             using (var stream = await file.OpenStreamForReadAsync())
                             {
-                                result = await serializer.DeserializeStreamAsync<T>(stream).ConfigureAwait(false);
+                                result = await serializer.DeserializeAsync<T>(stream).ConfigureAwait(false);
                             }
                         }
                     }
@@ -324,6 +331,5 @@ namespace Mendo.UAP.Common
         }
 
         #endregion
-
     }
 }

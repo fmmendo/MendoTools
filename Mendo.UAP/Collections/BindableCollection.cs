@@ -17,26 +17,26 @@ namespace Mendo.UAP
     /// reference: http://referencesource.microsoft.com/#System/compmod/system/collections/objectmodel/observablecollection.cs
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class DynamicCollection<T> : Collection<T>, INotifyCollectionChanged, INotifyPropertyChanged, ISupportIncrementalLoading//, ILoadableResult
+    public class BindableCollection<T> : Collection<T>, INotifyCollectionChanged, INotifyPropertyChanged, ISupportIncrementalLoading//, ILoadableResult
     {
         #region Constructors
 
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public DynamicCollection() : base() { }
+        public BindableCollection() : base() { }
 
         /// <summary>
-        /// Initializes a new instance of the DynamicCollection class that contains elements
+        /// Initializes a new instance of the BindableCollection class that contains elements
         /// copied from the specified list
         /// </summary>
         /// <param name="list">The list whose elements are copied to the new list.</param>
         /// <remarks>
-        /// The elements are copied onto the DynamicCollection in the same order they are read by
+        /// The elements are copied onto the BindableCollection in the same order they are read by
         /// the enumerator of the list.
         /// </remarks>
         /// <exception cref="ArgumentNullException"> list is a null reference </exception>
-        public DynamicCollection(List<T> list) : base((list != null) ? new List<T>(list.Count) : list)
+        public BindableCollection(List<T> list) : base((list != null) ? new List<T>(list.Count) : list)
         {
             // Workaround for VSWhidbey bug 562681 (tracked by Windows bug 1369339).
             // We should be able to simply call the base(list) ctor.  But Collection<T> doesn't copy the list 
@@ -55,7 +55,7 @@ namespace Mendo.UAP
         /// the enumerator of the collection.
         /// </remarks>
         /// <exception cref="ArgumentNullException"> collection is a null reference </exception>
-        public DynamicCollection(IEnumerable<T> collection)
+        public BindableCollection(IEnumerable<T> collection)
         {
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
@@ -91,7 +91,7 @@ namespace Mendo.UAP
         }
 
         /// <summary>
-        /// Adds a collection of items to a DynamicCollection. 
+        /// Adds a collection of items to a BindableCollection. 
         /// </summary>
         /// <param name="collection"></param>
         /// <param name="notifyType"></param>
@@ -207,7 +207,7 @@ namespace Mendo.UAP
         }
 
         /// <summary>
-        /// Called by base class DynamicCollection<T> when an item is to be moved within the list;
+        /// Called by base class BindableCollection<T> when an item is to be moved within the list;
         /// raises a CollectionChanged event to any listeners.
         /// </summary>
         protected virtual void MoveItem(int oldIndex, int newIndex)
@@ -322,11 +322,14 @@ namespace Mendo.UAP
                 }
 
                 OnPropertyChanged(nameof(IsLoading));
+                OnPropertyChanged(nameof(IsEmpty));
                 OnPropertyChanged(nameof(IsEmptyLoading));
                 OnPropertyChanged(nameof(IsSubsequentLoading));
                 OnPropertyChanged(nameof(CanLoadMoreItems));
             }
         }
+
+        public Boolean IsNotLoaded => LoadState == LoadState.NotLoaded;
 
         /// <summary>
         /// Returns true if the collection is empty but loading items.
@@ -354,6 +357,8 @@ namespace Mendo.UAP
                 OnPropertyChanged(nameof(IsFirstLoadedEmpty));
             }
         }
+
+        public bool IsFirstLoadedWithContent => IsFirstLoaded && this.Items.Count > 0;
 
         public uint PageSize
         {
@@ -499,7 +504,7 @@ namespace Mendo.UAP
 
         /// <summary>
         /// Raise CollectionChanged event to any listeners.
-        /// Properties/methods modifying this DynamicCollection will raise
+        /// Properties/methods modifying this BindableCollection will raise
         /// a collection changed event through this virtual method.
         /// </summary>
         /// <remarks>

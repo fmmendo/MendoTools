@@ -53,23 +53,23 @@ namespace Mendo.UAP.Serialization
 
             using (var stream = Encoding.UTF8.GetBytes(data).AsBuffer().AsStream())
             {
-                result = await DeserializeStreamAsync<T>(stream);
+                result = await DeserializeAsync<T>(stream);
             }
 
             return result;
         }
 
-        public Task<T> DeserializeStreamAsync<T>(Stream stream)
+        public Task<T> DeserializeAsync<T>(Stream stream) => Task.Run(() => Deserialize<T>(stream));
+
+
+        public T Deserialize<T>(Stream stream)
         {
-            return Task.Run(() =>
-            {
-                T output = default(T);
-                output = (T)serializer.Deserialize((Stream)stream);
-                return output;
-            });
+            T output = default(T);
+            output = (T)serializer.Deserialize((Stream)stream);
+            return output;
         }
 
-        public Task SerializeStreamAsync<T>(T data, Stream stream)
+        public Task SerializeAsync<T>(T data, Stream stream)
         {
             return Task.Run(() =>
             {

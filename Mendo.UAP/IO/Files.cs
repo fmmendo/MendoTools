@@ -57,7 +57,7 @@ namespace Mendo.UAP.IO
                     }
 
                     dataStream.Seek(0);
-                    result = await serializer.DeserializeStreamAsync<T>(dataStream.AsStream()).ConfigureAwait(false);
+                    result = await serializer.DeserializeAsync<T>(dataStream.AsStream()).ConfigureAwait(false);
                 }
 
             }
@@ -107,7 +107,7 @@ namespace Mendo.UAP.IO
                     using (var memoryStream = new InMemoryRandomAccessStream())
                     {
                         // Serialize data into memory stream
-                        await serializer.SerializeStreamAsync(value, memoryStream.AsStream()).ConfigureAwait(false);
+                        await serializer.SerializeAsync(value, memoryStream.AsStream()).ConfigureAwait(false);
                         memoryStream.Seek(0);
                         await memoryStream.AsStream().CopyToAsync(fileStream).ConfigureAwait(false);
                     }
