@@ -59,12 +59,13 @@ namespace Mendo.UAP.Common
         #region Get<T>
         /// <summary>
         /// Gets the value of a property. If the property does not exist, returns the default value.
+        /// Best for value types.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="defaultValue">Default value to set and return if property is null.</param>
         /// <param name="propertyName"></param>
         /// <returns></returns>
-        protected T Get<T>(T defaultValue = default(T), [CallerMemberName] String propertyName = null)
+        protected T GetV<T>(T defaultValue = default(T), [CallerMemberName] String propertyName = null)
         {
             object t;
             if (data.TryGetValue(propertyName, out t))
@@ -76,6 +77,7 @@ namespace Mendo.UAP.Common
 
         /// <summary>
         /// Gets the value of a property. If the property does not exist, returns the default value.
+        /// Best for object types.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="defaultValue">Default value to set and return if property is null.</param>

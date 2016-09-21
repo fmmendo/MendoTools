@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
@@ -17,7 +18,7 @@ namespace Mendo.UAP
     /// reference: http://referencesource.microsoft.com/#System/compmod/system/collections/objectmodel/observablecollection.cs
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class BindableCollection<T> : Collection<T>, INotifyCollectionChanged, INotifyPropertyChanged, ISupportIncrementalLoading//, ILoadableResult
+    public class BindableCollection<T> : Collection<T>, INotifyCollectionChanged, INotifyPropertyChanged, ISupportIncrementalLoading, ILoadable
     {
         #region Constructors
 
@@ -292,17 +293,48 @@ namespace Mendo.UAP
 
         #region Properties
 
+        public uint PageSize
+        {
+            get { return Get<uint>(10); }
+            set { Set(value); }
+        }
+
+        public uint PageOffset
+        {
+            get { return Get<uint>(0); }
+            set { Set(value); }
+        }
+
+        public string Title
+        {
+            get { return Get<string>(); }
+            set { Set(value); }
+        }
+
+        public string ErrorMessage
+        {
+            get { return Get<string>(); }
+            set { Set(value); }
+        }
+
+        public string EmptyMessage
+        {
+            get { return Get<string>(); }
+            set { Set(value); }
+        }
         /// <summary>
         /// When set to false, prevents IncrementalLoading from continuing.
         /// </summary>
         public Boolean CanLoadMoreItems
         {
-            get { return canLoadMoreItems; }
+            get { return Get(true); }
             set
             {
-                canLoadMoreItems = value;
-                OnPropertyChanged(nameof(CanLoadMoreItems));
-                OnPropertyChanged(nameof(HasMoreItems));
+                if (Set(value))
+                {
+                    OnPropertyChanged(nameof(CanLoadMoreItems));
+                    OnPropertyChanged(nameof(HasMoreItems));
+                }
             }
         }
 
@@ -311,21 +343,53 @@ namespace Mendo.UAP
         /// </summary>
         public Boolean IsLoading
         {
-            get { return isLoading; }
+            get { return Get(false); }
             private set
             {
-                isLoading = value;
-                if (value)
+                if (Set(value))
                 {
-                    IsFaulted = false;
-                    ErrorMessage = null;
-                }
+                    if (value)
+                    {
+                        IsFaulted = false;
+                        ErrorMessage = null;
+                    }
 
-                OnPropertyChanged(nameof(IsLoading));
-                OnPropertyChanged(nameof(IsEmpty));
-                OnPropertyChanged(nameof(IsEmptyLoading));
-                OnPropertyChanged(nameof(IsSubsequentLoading));
-                OnPropertyChanged(nameof(CanLoadMoreItems));
+                    OnPropertyChanged(nameof(IsLoading));
+                    OnPropertyChanged(nameof(IsEmpty));
+                    OnPropertyChanged(nameof(IsEmptyLoading));
+                    OnPropertyChanged(nameof(IsSubsequentLoading));
+                    OnPropertyChanged(nameof(CanLoadMoreItems));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the collection has been through one load operation 
+        /// previously.
+        /// </summary>
+        public bool IsFirstLoaded
+        {
+            get { return Get(false); }
+            private set
+            {
+                if (Set(true))
+                {
+                    OnPropertyChanged(nameof(IsFirstLoadFaulted));
+                    OnPropertyChanged(nameof(IsFirstLoadedEmpty));
+                }
+            }
+        }
+
+        public bool IsFaulted
+        {
+
+            get { return Get(false); }
+            set
+            {
+                if (Set(value))
+                {
+                    OnPropertyChanged(nameof(IsFirstLoadFaulted));
+                }
             }
         }
 
@@ -341,112 +405,129 @@ namespace Mendo.UAP
         /// </summary>
         public bool IsSubsequentLoading => IsLoading && Count > 0;
 
-        /// <summary>
-        /// Returns true if the collection has been through one load operation 
-        /// previously.
-        /// </summary>
-        public bool IsFirstLoaded
-        {
-            get { return isFirstLoaded; }
-            set
-            {
-                isFirstLoaded = value;
-
-                OnPropertyChanged(nameof(IsFirstLoaded));
-                OnPropertyChanged(nameof(IsFirstLoadFaulted));
-                OnPropertyChanged(nameof(IsFirstLoadedEmpty));
-            }
-        }
-
         public bool IsFirstLoadedWithContent => IsFirstLoaded && this.Items.Count > 0;
-
-        public uint PageSize
-        {
-            get { return pageSize; }
-            set { pageSize = value; OnPropertyChanged(nameof(PageSize)); }
-        }
-
-        public uint PageOffset
-        {
-            get { return pageOffset; }
-            set { pageOffset = value; OnPropertyChanged(nameof(PageOffset)); }
-        }
-
-        public string ErrorMessage
-        {
-            get { return errorMessage; }
-            set { errorMessage = value; OnPropertyChanged(nameof(ErrorMessage)); }
-        }
-
-        public string EmptyMessage
-        {
-            get { return emptyMessage; }
-            set { emptyMessage = value; OnPropertyChanged(nameof(EmptyMessage)); }
-        }
 
         /// <summary>
         /// Returns true if there are no items in the collection
         /// </summary>
-        public bool IsEmpty => !Items.Any();
+        public bool IsEmpty => Items.Count == 0;
 
         /// <summary>
         /// Returns true if the collection has loaded but still has no items
         /// </summary>
-        public bool IsFirstLoadedEmpty => IsFirstLoaded && !Items.Any();
+        public bool IsFirstLoadedEmpty => IsFirstLoaded && Items.Count == 0;
 
         /// <summary>
         /// Returns true is the collection failed first loading
         /// </summary>
         public bool IsFirstLoadFaulted => !IsFirstLoaded && IsFaulted;
 
-        public bool IsFaulted
-        {
-
-            get { return isFaulted; }
-            set
-            {
-                isFaulted = value;
-
-                OnPropertyChanged(nameof(IsFaulted));
-                OnPropertyChanged(nameof(IsFirstLoadFaulted));
-            }
-        }
-
         public LoadState LoadState
         {
-            get { return loadState; }
+            get { return Get(LoadState.NotLoaded); }
             set
             {
-                loadState = value;
-
-                switch (value)
+                if (Set(value))
                 {
-                    case LoadState.Loaded:
-                        IsFirstLoaded = true;
-                        IsLoading = false;
-                        break;
-                    case LoadState.Loading:
-                        IsLoading = true;
-                        break;
-                    case LoadState.NotLoaded:
-                        IsFirstLoaded = false;
-                        IsLoading = false;
-                        break;
-                    case LoadState.FirstLoadFailed:
-                    case LoadState.SuccessiveLoadFailed:
-                        IsFaulted = true;
-                        IsLoading = false;
-                        break;
+                    switch (value)
+                    {
+                        case LoadState.Loaded:
+                            IsFirstLoaded = true;
+                            IsLoading = false;
+                            break;
+                        case LoadState.Loading:
+                            IsLoading = true;
+                            break;
+                        case LoadState.NotLoaded:
+                            IsFirstLoaded = false;
+                            IsLoading = false;
+                            break;
+                        case LoadState.FirstLoadFailed:
+                        case LoadState.SuccessiveLoadFailed:
+                            IsFaulted = true;
+                            IsLoading = false;
+                            break;
+                    }
                 }
             }
         }
+        
+        #endregion Properties
 
         /// <summary>
         /// Returns the UI thread Dispatcher
         /// </summary>
         protected CoreDispatcher Dispatcher => CoreApplication.MainView.CoreWindow.Dispatcher;
 
-        #endregion Properties
+        #region ViewModelBase
+
+        private Dictionary<string, object> data = new Dictionary<string, object>();
+
+        #region Set<T>
+        /// <summary>
+        /// Sets the backing field of a referenced property and fires off a
+        /// PropertyChangedEvent if the value has changed.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="backingField"></param>
+        /// <param name="value"></param>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        protected bool Set<T>(ref T backingField, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (Equals(backingField, value))
+                return false;
+
+            backingField = value;
+            OnPropertyChanged(propertyName);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Sets the value of a property to our internal dictionary, and fires off a
+        /// PropertyChangedEvent if the value has changed
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        protected bool Set<T>(T value, [CallerMemberName] String propertyName = null)
+        {
+            if (data == null)
+                return false;
+
+            object t;
+            if (data.TryGetValue(propertyName, out t) && Equals(t, value))
+                return false;
+
+            data[propertyName] = value;
+            OnPropertyChanged(propertyName);
+
+            return true;
+        }
+        #endregion
+
+        #region Get<T>
+        /// <summary>
+        /// Gets the value of a property. If the property does not exist, returns the default value.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="defaultValue">Default value to set and return if property is null.</param>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        protected T Get<T>(T defaultValue = default(T), [CallerMemberName] String propertyName = null)
+        {
+            object t;
+            if (data.TryGetValue(propertyName, out t))
+                return (T)t;
+
+            data[propertyName] = defaultValue;
+            return defaultValue;
+        }
+        #endregion
+
+        #endregion
 
         #region Interface Implementations
 
@@ -559,6 +640,21 @@ namespace Mendo.UAP
 
         public bool HasMoreItems => AsyncLoadAction != null && CanLoadMoreItems && !IsLoading;
 
+
+
+        public DataLoadedEventHandler OnDataLoaded
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public IAsyncOperation<LoadMoreItemsResult> LoadMoreItemsAsync(uint count)
         {
             var tcs = new TaskCompletionSource<LoadMoreItemsResult>();
@@ -602,17 +698,18 @@ namespace Mendo.UAP
 
         #endregion Interface Implementations
 
-        private bool canLoadMoreItems = true;
-        private bool isFirstLoaded = false;
-        private bool isLoading = false;
-        private bool isFaulted = false;
+        #region Serialization
 
-        private uint pageSize = 10;
-        private uint pageOffset = 0;
+        public void PreSerializing()
+        {
+            throw new NotImplementedException();
+        }
 
-        private string errorMessage = string.Empty;
-        private string emptyMessage = string.Empty;
+        public void PostSerializing()
+        {
+            throw new NotImplementedException();
+        }
 
-        public LoadState loadState = LoadState.NotLoaded;
+        #endregion
     }
 }

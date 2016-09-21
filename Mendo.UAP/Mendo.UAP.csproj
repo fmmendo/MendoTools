@@ -119,6 +119,7 @@
     <Compile Include="Collections\LoadState.cs" />
     <Compile Include="Common\BindableSingleton.cs" />
     <Compile Include="Common\DeviceInformation.cs" />
+    <Compile Include="Common\ILoadable.cs" />
     <Compile Include="Common\NavigationService.cs" />
     <Compile Include="Common\PageBase.cs" />
     <Compile Include="Common\Settings.cs" />
