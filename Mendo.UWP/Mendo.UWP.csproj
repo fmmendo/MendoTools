@@ -118,7 +118,6 @@
     <Compile Include="Common\PageBase.cs" />
     <Compile Include="Common\Settings.cs" />
     <Compile Include="Common\Singleton.cs" />
-    <Compile Include="Common\SingletonViewModelBase.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="Common\ViewModelBase.cs" />
     <Compile Include="Common\WeakFunc.cs" />

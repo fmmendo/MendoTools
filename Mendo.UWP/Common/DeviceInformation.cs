@@ -22,7 +22,7 @@ namespace Mendo.UWP.Common
         HoloLens = 64
     }
 
-    public sealed class DeviceInformation : SingletonViewModelBase<DeviceInformation>
+    public sealed class DeviceInformation : BindableSingleton<DeviceInformation>
     {
         public bool IsPhone { get; }
         public bool IsXbox { get; }
