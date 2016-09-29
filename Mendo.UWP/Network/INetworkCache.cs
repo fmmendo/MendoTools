@@ -1,30 +1,29 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Mendo.UWP.Cache
+namespace Mendo.UWP.Network
 {
     public interface INetworkCache
     {
-        //int GetMaxEntries();
+        int GetMaxEntries();
 
-        //Task<CacheResult<string>> GetStringAsync(string uri, TimeSpan? expiry);
+        Task<CacheResult<String>> GetStringAsync(string url, TimeSpan? expiry);
 
-        //Task<CacheResult<byte[]>> GetBytesAsync(string uri, TimeSpan? expiry);
+        Task<CacheResult<byte[]>> GetBytesAsync(string url, TimeSpan? expiry);
 
-        //Task SaveAsync(string Uri, string result);
+        Task SaveAsync(string url, string result);
 
-        //Task SaveAsync(string Uri, byte[] data);
+        Task SaveAsync(string url, byte[] data);
 
-        //Task TrimAsync();
+        Task TrimAsync();
 
-        //Task InitialiseAsync();
+        Task InitialiseAsync();
 
         Task ClearCacheAsync();
     }
 
     /// <summary>
-    /// A simple wrapper class for returning
-    /// generic cached data
+    /// A simple wrapper class for returning generic cached data
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class CacheResult<T>
@@ -34,9 +33,6 @@ namespace Mendo.UWP.Cache
         public bool Expired { get; set; }
     }
 
-    /// <summary>
-    /// Dictates how the caching mechanism should operate
-    /// </summary>
     public enum CacheMode
     {
         /// <summary>

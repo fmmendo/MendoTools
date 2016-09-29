@@ -108,7 +108,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviors\RatingClippingBehavior.cs" />
-    <Compile Include="Cache\INetworkCache.cs" />
+    <Compile Include="Compression\GZip.cs" />
+    <Compile Include="Compression\IStreamCompressor.cs" />
+    <Compile Include="Data\SQLite.cs" />
+    <Compile Include="Data\SQLiteAsync.cs" />
+    <Compile Include="Extensions\DataExtensions.cs" />
+    <Compile Include="Extensions\HttpExtensions.cs" />
+    <Compile Include="Network\HttpGet.cs" />
+    <Compile Include="Network\HttpPost.cs" />
+    <Compile Include="Network\HttpResult.cs" />
+    <Compile Include="Network\INetworkCache.cs" />
     <Compile Include="Collections\BindableCollection.cs" />
     <Compile Include="Collections\LoadState.cs" />
     <Compile Include="Common\BindableSingleton.cs" />
@@ -142,6 +151,9 @@
     <Compile Include="Extensions\TemplatedVisualTreeExtensions.cs" />
     <Compile Include="Extensions\VisualTreeExtensions.cs" />
     <Compile Include="IO\Files.cs" />
+    <Compile Include="Network\Http.cs" />
+    <Compile Include="Network\SQLiteCache.cs" />
+    <Compile Include="Network\SQLCacheEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\Binary.cs" />
     <Compile Include="Serialization\ISerializer.cs" />
@@ -164,7 +176,11 @@
     <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
       <Name>Behaviors SDK %28XAML%29</Name>
     </SDKReference>
+    <SDKReference Include="SQLite.UWP.2015, Version=3.14.2">
+      <Name>SQLite for Universal Windows Platform</Name>
+    </SDKReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
