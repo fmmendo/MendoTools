@@ -23,7 +23,7 @@ namespace Mendo.UWP.Network
 
         #region POST
 
-        public static Task<HttpResult<T2>> PostAsync<T1, T2>(string url, T1 data)
+        public static Task<HttpResult<T2>> PostTypeAsync<T1, T2>(string url, T1 data)
         {
             return Task.Run(() =>
             {
@@ -89,7 +89,7 @@ namespace Mendo.UWP.Network
         /// <param name="urlQuery">The url that you want to post to</param>
         /// <param name="formContent">The content that you wish to be posted with the request. Pass in null if you wish to leave content clear</param>
         /// <returns>A string representation of the response from the server</returns>
-        public static async Task<HttpResult<T>> Post<T>(string url, Dictionary<string, string> formContent, HttpClient client = null)
+        public static async Task<HttpResult<T>> PostAsync<T>(string url, Dictionary<string, string> formContent, HttpClient client = null)
         {
             HttpResult<T> result = new HttpResult<T>
             {
@@ -200,7 +200,6 @@ namespace Mendo.UWP.Network
         }
 
         #endregion
-
 
     }
 }
