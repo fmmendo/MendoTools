@@ -99,7 +99,7 @@ namespace Mendo.UWP.Network
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
                 finally
@@ -116,7 +116,7 @@ namespace Mendo.UWP.Network
                         result.Result = await DecompressDataAsync(result.Result).ConfigureAwait(false);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
 

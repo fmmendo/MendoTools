@@ -142,6 +142,7 @@ namespace Mendo.UWP.Network
                     result.Success = true;
                     result.FromCache = true;
                     result.Content = cachedata.Result;
+                    result.CacheExpired = cachedata.Expired;
                 }
             }
 
@@ -223,7 +224,7 @@ namespace Mendo.UWP.Network
                                     if (_isPrivateClient)
                                         cacheClient.Dispose();
                                 }
-                                catch (Exception ex)
+                                catch (Exception)
                                 {
 
                                 }
@@ -245,7 +246,7 @@ namespace Mendo.UWP.Network
                                 cache.SaveAsync(Uri, result.Content).ConfigureAwait(false);
 #pragma warning restore CS4014 
                         }
-                        catch (UnauthorizedAccessException ex)
+                        catch (UnauthorizedAccessException)
                         {
                             // If we're told it's unauthorized access we don't want to fail the whole feed, the cache failed but the get didn't
                         }
