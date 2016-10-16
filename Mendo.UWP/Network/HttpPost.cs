@@ -58,7 +58,7 @@ namespace Mendo.UWP.Network
                     {
                         response = await client.PostAsync(new Uri(url), content).AsTask().ConfigureAwait(false);
                     }
-                    catch (Exception exn)
+                    catch (Exception)
                     {
                         return null;
                     }
@@ -178,7 +178,7 @@ namespace Mendo.UWP.Network
                     {
                         response = await client.PostAsync(uri, content);
                     }
-                    catch (Exception exn)
+                    catch (Exception)
                     {
                         return result;
                     }

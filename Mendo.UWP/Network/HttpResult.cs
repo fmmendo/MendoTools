@@ -15,12 +15,18 @@ namespace Mendo.UWP.Network
         /// If true, internet connection was available when the call was made
         /// </summary>
         public Boolean WasConnectionAvaliable { get; set; }
-        
+
         /// <summary>
         /// If true, data has come from the local cache
         /// </summary>
         public Boolean FromCache { get; set; }
-        
+
+        /// <summary>
+        /// If true, data came from cache, but an HTTP request was still done 
+        /// to update the cache.
+        /// </summary>
+        public bool CacheExpired { get; set; }
+
         /// <summary>
         /// If true, the Http call completed successfully, and any additional 
         /// parsing or type conversions succeeded

@@ -112,7 +112,7 @@ namespace Mendo.UWP.Common
                     eventHandler(this, new PropertyChangedEventArgs(propertyName));
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
             }
         }

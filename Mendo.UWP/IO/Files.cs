@@ -28,7 +28,7 @@ namespace Mendo.UWP.IO
                 String text = await FileIO.ReadTextAsync(file).AsTask().ConfigureAwait(false);
                 result = await serializer.DeserializeAsync<T>(text).ConfigureAwait(false);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return result;
             }
@@ -61,7 +61,7 @@ namespace Mendo.UWP.IO
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return result;
             }
@@ -86,7 +86,7 @@ namespace Mendo.UWP.IO
                     await FileIO.WriteTextAsync(file, text).AsTask().ConfigureAwait(false);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -113,7 +113,7 @@ namespace Mendo.UWP.IO
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

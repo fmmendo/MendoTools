@@ -61,6 +61,18 @@ namespace Mendo.UWP.Extensions
             return Convert.ToBase64String(input);
         }
 
+        /// <summary>
+        /// Converts a byte array to a string, using its byte order mark to convert it to the right encoding.
+        /// http://www.shrinkrays.net/code-snippets/csharp/an-extension-method-for-converting-a-byte-array-to-a-string.aspx
+        /// </summary>
+        /// <param name="buffer">An array of bytes to convert</param>
+        /// <returns>The byte as a string.</returns>
+        public static string AsString(this byte[] input)
+        {
+            return input == null ? "" : Encoding.UTF8.GetString(input, 0, input.Length);
+
+        }
+
         public static byte[] GetBytes(this string input)
         {
             return Encoding.UTF8.GetBytes(input);
@@ -85,6 +97,76 @@ namespace Mendo.UWP.Extensions
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Converts a string to pascal case with the option to remove underscores
+        /// </summary>
+        /// <param name="text">String to convert</param>
+        /// <param name="removeUnderscores">Option to remove underscores</param>
+        /// <returns></returns>
+        public static string ToPascalCase(this string text, bool removeUnderscores = true)
+        {
+            if (String.IsNullOrEmpty(text))
+                return text;
+
+            text = text.Replace("_", " ");
+            string joinString = removeUnderscores ? String.Empty : "_";
+            string[] words = text.Split(' ');
+            if (words.Length > 1 || words[0].IsUpperCase())
+            {
+                for (int i = 0; i < words.Length; i++)
+                {
+                    if (words[i].Length > 0)
+                    {
+                        string word = words[i];
+                        string restOfWord = word.Substring(1);
+
+                        if (restOfWord.IsUpperCase())
+                        {    //restOfWord = restOfWord.ToLower(culture);
+                            restOfWord = restOfWord.ToLower();
+                        }
+
+                        //char firstChar = char.ToUpper(word[0], culture);
+                        char firstChar = char.ToUpper(word[0]);
+
+                        words[i] = String.Concat(firstChar, restOfWord);
+                    }
+                }
+                return String.Join(joinString, words);
+            }
+            //return String.Concat(words[0].Substring(0, 1).ToUpper(culture), words[0].Substring(1));
+            return String.Concat(words[0].Substring(0, 1).ToUpper(), words[0].Substring(1));
+        }
+
+        /// <summary>
+        /// Converts a string to camel case
+        /// </summary>
+        /// <param name="lowercaseAndUnderscoredWord">String to convert</param>
+        /// <returns>String</returns>
+        public static string ToCamelCase(this string lowercaseAndUnderscoredWord)
+        {
+            return MakeInitialLowerCase(ToPascalCase(lowercaseAndUnderscoredWord));
+        }
+
+        /// <summary>
+        /// Convert the first letter of a string to lower case
+        /// </summary>
+        /// <param name="word">String to convert</param>
+        /// <returns>string</returns>
+        public static string MakeInitialLowerCase(this string word)
+        {
+            return string.Concat(word.Substring(0, 1).ToLower(), word.Substring(1));
+        }
+
+        /// <summary>
+        /// Checks to see if a string is all uppper case
+        /// </summary>
+        /// <param name="inputString">String to check</param>
+        /// <returns>bool</returns>
+        public static bool IsUpperCase(this string inputString)
+        {
+            return Regex.IsMatch(inputString, @"^[A-Z]+$");
+        }
+
         public static IDictionary<string, string> ParseQueryString(this string query)
         {
             // [DC]: This method does not URL decode, and cannot handle decoded input
@@ -101,6 +183,16 @@ namespace Mendo.UWP.Extensions
                 part => part.Split(new[] { '=' })).ToDictionary(
                     pair => pair[0], pair => pair[1]
                 );
+        }
+
+        /// <summary>
+        /// Remove underscores from a string
+        /// </summary>
+        /// <param name="input">String to process</param>
+        /// <returns>string</returns>
+        public static string RemoveUnderscoresAndDashes(this string input)
+        {
+            return input.Replace("_", "").Replace("-", "");
         }
 
         private const RegexOptions Options = RegexOptions.IgnoreCase;

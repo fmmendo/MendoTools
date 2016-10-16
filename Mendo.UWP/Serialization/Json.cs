@@ -87,7 +87,7 @@ namespace Mendo.UWP.Serialization
                 {
                     result = JsonConvert.DeserializeObject<T>(json);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     throw;
                 }

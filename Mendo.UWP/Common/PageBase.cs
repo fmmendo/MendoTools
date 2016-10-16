@@ -221,7 +221,7 @@ namespace Mendo.UWP.Common
                 this.SaveState(e, pageState);
                 frameState[_pageKey] = pageState;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
         }
