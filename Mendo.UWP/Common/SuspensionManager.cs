@@ -83,8 +83,8 @@ namespace Mendo.UWP.Common
                     }
                 }
 
-                var savedSession = await Settings.SetSerializedAsync(sessionStateFilename, _sessionState, Binary.Instance);
-                var savedParams = await Settings.SetSerializedAsync(parametreDictionaryFilename, _parametreDictionary, Binary.Instance);
+                var savedSession = await Settings.SetSerializedAsync(sessionStateFilename, _sessionState, Json.Instance);
+                var savedParams = await Settings.SetSerializedAsync(parametreDictionaryFilename, _parametreDictionary, Json.Instance);
             }
             catch (Exception e)
             {
@@ -109,8 +109,8 @@ namespace Mendo.UWP.Common
             try
             {
                 // 1. Get the serialised frame states and parameter dictionary states
-                var _states = await Settings.GetSerializedAsync<Dictionary<String, Object>>(sessionStateFilename, Binary.Instance);
-                var _params = await Settings.GetSerializedAsync<Dictionary<String, Object>>(parametreDictionaryFilename, Binary.Instance);
+                var _states = await Settings.GetSerializedAsync<Dictionary<String, Object>>(sessionStateFilename, Json.Instance);
+                var _params = await Settings.GetSerializedAsync<Dictionary<String, Object>>(parametreDictionaryFilename, Json.Instance);
 
                 // 2. If the states are null, get out of here
                 if (_states == null || _params == null)
@@ -234,9 +234,10 @@ namespace Mendo.UWP.Common
                 {
                     // Registered frames reflect the corresponding session state
                     if (!_sessionState.ContainsKey(frameSessionKey))
-                        _sessionState[frameSessionKey] = new Dictionary<String, Object>();
+                        _sessionState[frameSessionKey] = Json.Instance.Serialize(new Dictionary<String, Object>());
 
-                    frameState = (Dictionary<String, Object>)_sessionState[frameSessionKey];
+                    frameState = Json.Instance.Deserialize<Dictionary<String, Object>>(_sessionState[frameSessionKey].ToString());
+                    //frameState = (Dictionary<String, Object>);
                 }
                 else
                 {
