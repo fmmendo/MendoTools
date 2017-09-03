@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviors\RatingClippingBehavior.cs" />
+    <Compile Include="Common\DispatcherHelper.cs" />
     <Compile Include="Compression\GZip.cs" />
     <Compile Include="Compression\IStreamCompressor.cs" />
     <Compile Include="Data\SQLite.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\DataExtensions.cs" />
     <Compile Include="Extensions\HttpExtensions.cs" />
+    <Compile Include="Extensions\LinqExtensions.cs" />
     <Compile Include="Network\HttpGet.cs" />
     <Compile Include="Network\HttpPost.cs" />
     <Compile Include="Network\HttpResult.cs" />
@@ -176,6 +178,9 @@
   <ItemGroup>
     <SDKReference Include="SQLite.UWP.2015, Version=3.18.0">
       <Name>SQLite for Universal Windows Platform</Name>
+    </SDKReference>
+    <SDKReference Include="WindowsMobile, Version=10.0.10586.0">
+      <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
   <ItemGroup />

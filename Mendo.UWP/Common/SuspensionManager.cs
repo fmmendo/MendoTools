@@ -11,7 +11,7 @@ namespace Mendo.UWP.Common
     public class SuspensionManager
     {
         private static Dictionary<string, object> _sessionState = new Dictionary<string, object>();
-        private static Dictionary<string, object> _parametreDictionary = new Dictionary<string, object>();
+        private static Dictionary<string, object> _parameterDictionary = new Dictionary<string, object>();
 
         private const string sessionStateFilename = "_sessionState";
         private const string parametreDictionaryFilename = "_paramState";
@@ -44,7 +44,7 @@ namespace Mendo.UWP.Common
         /// Rely on NavigationService.Navigate(...) rather than Frame.Navigate(...) to take advantage
         /// of this.
         /// </summary>
-        public static Dictionary<string, object> ParameterStates => _parametreDictionary;
+        public static Dictionary<string, object> ParameterStates => _parameterDictionary;
 
         /// <summary>
         /// Save the current <see cref="SessionState"/>.  Any <see cref="Frame"/> instances
@@ -84,7 +84,7 @@ namespace Mendo.UWP.Common
                 }
 
                 var savedSession = await Settings.SetSerializedAsync(sessionStateFilename, _sessionState, Json.Instance);
-                var savedParams = await Settings.SetSerializedAsync(parametreDictionaryFilename, _parametreDictionary, Json.Instance);
+                var savedParams = await Settings.SetSerializedAsync(parametreDictionaryFilename, _parameterDictionary, Json.Instance);
             }
             catch (Exception e)
             {
@@ -118,7 +118,7 @@ namespace Mendo.UWP.Common
 
                 // 3. Set our restored states
                 _sessionState = _states;
-                _parametreDictionary = _params;
+                _parameterDictionary = _params;
 
                 // 4. Restore any registered frames to their saved state
                 foreach (var weakFrameReference in _registeredFrames)

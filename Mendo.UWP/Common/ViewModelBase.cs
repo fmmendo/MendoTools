@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mendo.UWP.Extensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -9,7 +10,24 @@ namespace Mendo.UWP.Common
 {
     public class ViewModelBase : INotifyPropertyChanged, IDisposable
     {
+        /// <summary>
+        /// Private data store
+        /// </summary>
         private Dictionary<string, object> data = new Dictionary<string, object>();
+
+        /// <summary>
+        /// When overridden, allows you to specify whether all standard SetProperty calls
+        /// automatically attempt to fire their property change notifications on the dispatcher.
+        /// Defaults to false. (Be aware of any possible threading issues this may cause - UI
+        /// thread will be updated notable after the data layer)
+        /// </summary>
+        public virtual Boolean AutomaticallyMarshalToDispatcher => false;
+
+        /// <summary>
+        /// Used to specify the dispatcher priority used when automatically marshaling 
+        /// to the Dispatcher thread or when using DispatcherSetProperty method
+        /// </summary>
+        public virtual CoreDispatcherPriority DefaultMarshalingPriority => CoreDispatcherPriority.Normal;
 
         #region Set<T>
         /// <summary>
@@ -27,7 +45,7 @@ namespace Mendo.UWP.Common
                 return false;
 
             backingField = value;
-            OnPropertyChanged(propertyName);
+            OnPropertyChanged(propertyName, AutomaticallyMarshalToDispatcher);
 
             return true;
         }
@@ -50,9 +68,29 @@ namespace Mendo.UWP.Common
                 return false;
 
             data[propertyName] = value;
-            OnPropertyChanged(propertyName);
+            OnPropertyChanged(propertyName, AutomaticallyMarshalToDispatcher);
 
             return true;
+        }
+
+        /// <summary>
+        /// Sets a property value. If the value has changed, property changed notifications are called
+        /// for the specified property, and all dependent properties
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value">New desired value of the property</param>
+        /// <param name="propertyName">Name of the property being set. This cannot be inferred automatically because of the params overload.</param>
+        /// <param name="dependentProperties">Names of additional properties to call PropertyChanged events for</param>
+        /// <returns></returns>
+        protected Boolean Set<T>(T value, String propertyName, params string[] dependentProperties)
+        {
+            if (Set(value, propertyName))
+            {
+                this.OnPropertiesChanged(dependentProperties);
+                return true;
+            }
+
+            return false;
         }
         #endregion
 
@@ -89,7 +127,8 @@ namespace Mendo.UWP.Common
             if (data.TryGetValue(propertyName, out t))
                 return (T)t;
 
-            T value = defaultValue?.Invoke();
+
+            T value = (defaultValue == null) ? default(T) : defaultValue.Invoke();
             data[propertyName] = value;
             return value;
         }
@@ -102,26 +141,66 @@ namespace Mendo.UWP.Common
         /// Notify Property Changed
         /// </summary>
         /// <param name="propertyName">Property Name (optional)</param>
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null, bool fireOverDispatcher = false)
         {
             try
             {
-                var eventHandler = PropertyChanged;
-                if (eventHandler != null)
-                {
-                    eventHandler(this, new PropertyChangedEventArgs(propertyName));
-                }
+                bool forceFire = fireOverDispatcher || AutomaticallyMarshalToDispatcher;
+
+                if (forceFire)
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                else                    
+                    DispatcherHelper.MarshallAsync(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
             }
             catch (Exception)
+            {
+            }
+        }
+
+        protected void OnPropertiesChanged(params String[] args)
+        {
+            // Marshall all of them together
+            DispatcherHelper.MarshallAsync(() =>
+            {
+                args.DoImmediate(a => this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(a)));
+            });
+        }
+
+        /// <summary>
+        /// Broadcasts an OnPropertyChanged notification signifying all properties should be re-evaluated
+        /// </summary>
+        /// <param name="forceFireOverDispatcher"></param>
+        protected void OnAllPropertiesChanged(bool forceFireOverDispatcher = false)
+        {
+            try
+            {
+                var eventHandler = this.PropertyChanged;
+                if (eventHandler != null)
+                {
+                    bool forceFire = forceFireOverDispatcher || AutomaticallyMarshalToDispatcher;
+
+                    if (!forceFire)
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(String.Empty));
+                    else
+                        DispatcherHelper.MarshallAsync(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(String.Empty)));
+                }
+            }
+            catch (Exception e)
             {
             }
         }
         #endregion
 
         #region IDisposable
+        /// <summary>
+        /// Frees up memory associated with the internal dictionary that may otherwise cause memory leakage
+        /// </summary>
+        public virtual void Dispose()
+        {
+            ((IDisposable)this).Dispose();
+        }
 
-
-        public void Dispose()
+        void IDisposable.Dispose()
         {
             data.Clear();
         }

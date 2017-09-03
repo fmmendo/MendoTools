@@ -17,10 +17,13 @@ namespace Mendo.UWP.Common
             // 2) Handle hardware navigation requests
             Loaded += (sender, e) =>
             {
-                //#if WINDOWS_PHONE_APP
-                //                Windows.Phone.UI.Input.HardwareButtons.BackPressed += HardwareButtons_BackPressed;
-                //#else
-                //                StartLayoutUpdates(sender, e);
+                if (DeviceInformation.Instance.HasPhoneHardwareButtons)
+                {
+                    Windows.Phone.UI.Input.HardwareButtons.BackPressed += HardwareButtons_BackPressed;
+                }
+
+                SystemNavigationManager.GetForCurrentView().BackRequested += BasePage_BackRequested;
+
                 // Keyboard and mouse navigation only apply when occupying the entire window
                 if (ActualHeight == Window.Current.Bounds.Height && ActualWidth == Window.Current.Bounds.Width)
                 {
@@ -34,14 +37,19 @@ namespace Mendo.UWP.Common
             // Undo the same changes when the page is no longer visible
             Unloaded += (sender, e) =>
             {
-                //#if WINDOWS_PHONE_APP
-                //                Windows.Phone.UI.Input.HardwareButtons.BackPressed -= HardwareButtons_BackPressed;
-                //#else
-                //                StopLayoutUpdates(sender, e);
+                if (DeviceInformation.Instance.HasPhoneHardwareButtons)
+                {
+                    Windows.Phone.UI.Input.HardwareButtons.BackPressed -= HardwareButtons_BackPressed;
+                }
+
+                SystemNavigationManager.GetForCurrentView().BackRequested -= BasePage_BackRequested;
+
                 Window.Current.CoreWindow.Dispatcher.AcceleratorKeyActivated -= CoreDispatcher_AcceleratorKeyActivated;
                 Window.Current.CoreWindow.PointerPressed -= CoreWindow_PointerPressed;
                 //#endif
             };
+
+            Transitions = new Windows.UI.Xaml.Media.Animation.TransitionCollection();
         }
 
         #region Navigation
@@ -82,6 +90,36 @@ namespace Mendo.UWP.Common
         {
             if (Frame != null && Frame.CanGoForward)
                 Frame.GoForward();
+        }
+
+        /// <summary>
+        /// Invoked when the hardware back button is pressed. For Windows Phone only.
+        /// </summary>
+        /// <param name="sender">Instance that triggered the event.</param>
+        /// <param name="e">Event data describing the conditions that led to the event.</param>
+        private void HardwareButtons_BackPressed(object sender, Windows.Phone.UI.Input.BackPressedEventArgs e)
+        {
+            e.Handled = OnBackRequested(true);
+        }
+
+        private void BasePage_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            e.Handled = OnBackRequested(true);
+        }
+
+        /// <summary>
+        /// Returns whether or not the back request has been handled
+        /// </summary>
+        /// <returns></returns>
+        protected virtual bool OnBackRequested(bool FromHardwareBackButton)
+        {
+            if (CanGoBack())
+            {
+                GoBack();
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -168,6 +206,8 @@ namespace Mendo.UWP.Common
         /// property provides the group to be displayed.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            HandleTitleBarBackButton();
+
             // Returning to a cached page through navigation shouldn't trigger state loading
             if (_pageKey != null)
                 return;
@@ -247,6 +287,35 @@ namespace Mendo.UWP.Common
         /// <param name="pageState">An empty dictionary to be populated with serializable state.</param>
         protected virtual void SaveState(NavigationEventArgs e, Dictionary<string, object> pageState)
         {
+        }
+
+        #endregion
+
+        #region Back Button
+
+
+
+        public bool EnableTitleBarBackButton
+        {
+            get { return (bool)GetValue(EnableTitleBarBackButtonProperty); }
+            set { SetValue(EnableTitleBarBackButtonProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for EnableTitleBackButton.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty EnableTitleBarBackButtonProperty =
+            DependencyProperty.Register("EnableTitleBarBackButton", typeof(bool), typeof(PageBase), new PropertyMetadata(false, OnTitleBarBackButtonChanged));
+
+        private static void OnTitleBarBackButtonChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((PageBase)d).HandleTitleBarBackButton();
+        }
+
+        private void HandleTitleBarBackButton()
+        {
+            if (this.CanGoBack() && EnableTitleBarBackButton)
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+            else
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
         }
 
         #endregion

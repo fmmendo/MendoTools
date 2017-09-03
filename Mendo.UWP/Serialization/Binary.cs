@@ -36,9 +36,25 @@ namespace Mendo.UWP.Serialization
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
         /// <returns></returns>
+        public string Serialize<T>(T value)
+        {
+            throw new NotSupportedException("Binary Serializer supports stream modes only");
+        }
+
+        /// <summary>
+        /// STRING MODES NOT SUPPORTED FOR BINARY
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public Task<string> SerializeAsync<T>(T value)
         {
             throw new NotSupportedException("Binary Serializer supports stream modes only");
+        }
+
+        public Task SerializeAsync<T>(T data, Stream stream)
+        {
+            return Task.Run(() => serializer.Serialize(data, stream));
         }
 
         /// <summary>
@@ -67,14 +83,6 @@ namespace Mendo.UWP.Serialization
             T output = default(T);
             output = (T)serializer.Deserialize((Stream)stream);
             return output;
-        }
-
-        public Task SerializeAsync<T>(T data, Stream stream)
-        {
-            return Task.Run(() =>
-            {
-                serializer.Serialize(data, stream);
-            });
         }
     }
 }
