@@ -17,10 +17,6 @@ namespace Mendo.UWP.Common
             // 2) Handle hardware navigation requests
             Loaded += (sender, e) =>
             {
-                if (DeviceInformation.Instance.HasPhoneHardwareButtons)
-                {
-                    Windows.Phone.UI.Input.HardwareButtons.BackPressed += HardwareButtons_BackPressed;
-                }
 
                 SystemNavigationManager.GetForCurrentView().BackRequested += BasePage_BackRequested;
 
@@ -37,11 +33,6 @@ namespace Mendo.UWP.Common
             // Undo the same changes when the page is no longer visible
             Unloaded += (sender, e) =>
             {
-                if (DeviceInformation.Instance.HasPhoneHardwareButtons)
-                {
-                    Windows.Phone.UI.Input.HardwareButtons.BackPressed -= HardwareButtons_BackPressed;
-                }
-
                 SystemNavigationManager.GetForCurrentView().BackRequested -= BasePage_BackRequested;
 
                 Window.Current.CoreWindow.Dispatcher.AcceleratorKeyActivated -= CoreDispatcher_AcceleratorKeyActivated;
@@ -90,16 +81,6 @@ namespace Mendo.UWP.Common
         {
             if (Frame != null && Frame.CanGoForward)
                 Frame.GoForward();
-        }
-
-        /// <summary>
-        /// Invoked when the hardware back button is pressed. For Windows Phone only.
-        /// </summary>
-        /// <param name="sender">Instance that triggered the event.</param>
-        /// <param name="e">Event data describing the conditions that led to the event.</param>
-        private void HardwareButtons_BackPressed(object sender, Windows.Phone.UI.Input.BackPressedEventArgs e)
-        {
-            e.Handled = OnBackRequested(true);
         }
 
         private void BasePage_BackRequested(object sender, BackRequestedEventArgs e)
