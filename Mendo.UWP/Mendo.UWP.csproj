@@ -111,8 +111,6 @@
     <Compile Include="Common\DispatcherHelper.cs" />
     <Compile Include="Compression\GZip.cs" />
     <Compile Include="Compression\IStreamCompressor.cs" />
-    <Compile Include="Data\SQLite.cs" />
-    <Compile Include="Data\SQLiteAsync.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\DataExtensions.cs" />
     <Compile Include="Extensions\HttpExtensions.cs" />
@@ -155,6 +153,7 @@
     <Compile Include="Extensions\VisualTreeExtensions.cs" />
     <Compile Include="IO\Files.cs" />
     <Compile Include="Network\Http.cs" />
+    <Compile Include="Network\LiteDbCache.cs" />
     <Compile Include="Network\SQLiteCache.cs" />
     <Compile Include="Network\SQLCacheEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -176,11 +175,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <SDKReference Include="SQLite.UWP.2015, Version=3.20.1">
-      <Name>SQLite for Universal Windows Platform</Name>
-    </SDKReference>
+    <Folder Include="Data\" />
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
