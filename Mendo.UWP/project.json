@@ -7,7 +7,7 @@
     "SharpSerializer": "3.0.1"
   },
   "frameworks": {
-    "uap10.0.14393": {}
+    "uap10.0.16299": {}
   },
   "runtimes": {
     "win10-arm": {},
