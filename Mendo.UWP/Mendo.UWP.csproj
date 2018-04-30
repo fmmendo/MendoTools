@@ -154,7 +154,6 @@
     <Compile Include="IO\Files.cs" />
     <Compile Include="Network\Http.cs" />
     <Compile Include="Network\LiteDbCache.cs" />
-    <Compile Include="Network\SQLiteCache.cs" />
     <Compile Include="Network\SQLCacheEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\Binary.cs" />
